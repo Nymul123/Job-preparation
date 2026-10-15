@@ -1,0 +1,6 @@
+{
+  "name": "ExamArchive - Job Preparation Question Bank",
+  "description": "Modern, high-performance job exam question bank and archive with full solutions, embedded PDF downloads, image previews, and real-time admin management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

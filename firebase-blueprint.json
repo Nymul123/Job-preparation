@@ -1,0 +1,81 @@
+{
+  "entities": {
+    "JobQuestion": {
+      "title": "JobQuestion",
+      "description": "Official examination question archive paper",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "organization": { "type": "string", "maxLength": 300 },
+        "postName": { "type": "string", "maxLength": 300 },
+        "category": { "type": "string", "maxLength": 100 },
+        "examYear": { "type": "number" },
+        "examDate": { "type": "string", "maxLength": 50 },
+        "examType": { "type": "string", "maxLength": 100 },
+        "durationMinutes": { "type": "number" },
+        "totalMarks": { "type": "number" },
+        "summary": { "type": "string", "maxLength": 5000 },
+        "plainTextContent": { "type": "string", "maxLength": 200000 },
+        "hasPdf": { "type": "boolean" },
+        "pdfFileName": { "type": "string", "maxLength": 300 },
+        "pdfFileSize": { "type": "string", "maxLength": 50 },
+        "pdfDataUrl": { "type": "string", "maxLength": 800000 },
+        "uploadDate": { "type": "string", "maxLength": 50 },
+        "viewsCount": { "type": "number" }
+      },
+      "required": ["id", "organization", "postName", "category", "examYear"]
+    },
+    "JobCircular": {
+      "title": "JobCircular",
+      "description": "Job recruitment circular and apply link",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "organization": { "type": "string", "maxLength": 300 },
+        "designation": { "type": "string", "maxLength": 300 },
+        "category": { "type": "string", "maxLength": 100 },
+        "vacancyCount": { "type": "string", "maxLength": 100 },
+        "circularStartDate": { "type": "string", "maxLength": 50 },
+        "circularEndDate": { "type": "string", "maxLength": 50 },
+        "applyUrl": { "type": "string", "maxLength": 2000 },
+        "description": { "type": "string", "maxLength": 5000 },
+        "circularPdfFileName": { "type": "string", "maxLength": 300 },
+        "circularPdfDataUrl": { "type": "string", "maxLength": 800000 },
+        "uploadDate": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "organization", "designation", "category", "circularEndDate"]
+    },
+    "ExamSyllabus": {
+      "title": "ExamSyllabus",
+      "description": "Official exam syllabus and curriculum breakdown",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 300 },
+        "organization": { "type": "string", "maxLength": 300 },
+        "category": { "type": "string", "maxLength": 100 },
+        "examType": { "type": "string", "maxLength": 100 },
+        "totalMarks": { "type": "number" },
+        "uploadDate": { "type": "string", "maxLength": 50 },
+        "plainTextContent": { "type": "string", "maxLength": 100000 },
+        "pdfFileName": { "type": "string", "maxLength": 300 },
+        "pdfDataUrl": { "type": "string", "maxLength": 800000 }
+      },
+      "required": ["id", "title", "organization", "category", "totalMarks"]
+    }
+  },
+  "firestore": {
+    "/questions/{questionId}": {
+      "schema": { "$ref": "#/entities/JobQuestion" },
+      "description": "Collection of all published previous exam question sets"
+    },
+    "/circulars/{circularId}": {
+      "schema": { "$ref": "#/entities/JobCircular" },
+      "description": "Collection of recruitment notices and online apply links"
+    },
+    "/syllabuses/{syllabusId}": {
+      "schema": { "$ref": "#/entities/ExamSyllabus" },
+      "description": "Collection of exam curriculums and marks distribution"
+    }
+  }
+}

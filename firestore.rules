@@ -1,0 +1,68 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny all unlisted paths
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions for hardened security
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function isValidQuestion(data) {
+      return data.id is string && data.id.size() <= 128 &&
+             data.organization is string && data.organization.size() <= 300 &&
+             data.postName is string && data.postName.size() <= 300 &&
+             data.category is string && data.category.size() <= 100 &&
+             data.examYear is number && data.examYear >= 1971 && data.examYear <= 2100;
+    }
+
+    function isValidCircular(data) {
+      return data.id is string && data.id.size() <= 128 &&
+             data.organization is string && data.organization.size() <= 300 &&
+             data.designation is string && data.designation.size() <= 300 &&
+             data.category is string && data.category.size() <= 100 &&
+             data.circularEndDate is string && data.circularEndDate.size() <= 50;
+    }
+
+    function isValidSyllabus(data) {
+      return data.id is string && data.id.size() <= 128 &&
+             data.title is string && data.title.size() <= 300 &&
+             data.organization is string && data.organization.size() <= 300 &&
+             data.category is string && data.category.size() <= 100 &&
+             data.totalMarks is number && data.totalMarks >= 0;
+    }
+
+    // Questions Collection
+    // Students can read questions from any device/browser without barriers
+    match /questions/{questionId} {
+      allow get, list: if true;
+      allow create: if isValidId(questionId) && isValidQuestion(incoming());
+      allow update: if isValidId(questionId) && isValidQuestion(incoming());
+      allow delete: if isValidId(questionId);
+    }
+
+    // Circulars Collection
+    match /circulars/{circularId} {
+      allow get, list: if true;
+      allow create: if isValidId(circularId) && isValidCircular(incoming());
+      allow update: if isValidId(circularId) && isValidCircular(incoming());
+      allow delete: if isValidId(circularId);
+    }
+
+    // Syllabuses Collection
+    match /syllabuses/{syllabusId} {
+      allow get, list: if true;
+      allow create: if isValidId(syllabusId) && isValidSyllabus(incoming());
+      allow update: if isValidId(syllabusId) && isValidSyllabus(incoming());
+      allow delete: if isValidId(syllabusId);
+    }
+  }
+}
